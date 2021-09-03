@@ -23,7 +23,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-@RestController @CrossOrigin(origins = "http://localhost:4200")
+@RestController @CrossOrigin(origins = "http://localhost:4208")
 @RequestMapping("/api/v1")
 public class RoomController {
 
@@ -35,7 +35,7 @@ public class RoomController {
         return roomRepository.findAll();
     }
 
-    @GetMapping("/rooms/id")
+    @GetMapping("/rooms/{id}")
     public ResponseEntity<Room> getRoomById(@PathVariable(value = "id") long roomId)
             throws ResourceNotFoundException {
         Room room = roomRepository.findById(roomId)
@@ -48,7 +48,7 @@ public class RoomController {
         return roomRepository.save(room);
     }
 
-
+    @PutMapping("/rooms/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable(value = "id") Long roomId,
                                            @Valid @RequestBody Room roomDetails) throws ResourceNotFoundException {
         Room room = roomRepository.findById(roomId)
@@ -64,12 +64,12 @@ public class RoomController {
 
     public Map<String, Boolean> deleteRoom(@PathVariable(value = "id") Long roomId)
             throws ResourceNotFoundException {
-        Room rom = roomRepository.findById(roomId)
+        Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found for this id: " + roomId));
 
         roomRepository.delete(room);
         Map<String,Boolean> response = new HashMap<>();
-        response.put ("deleted", Boolean.TRUE);
+        response.put("deleted",Boolean.TRUE);
         return response;
 
     }
